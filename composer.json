@@ -31,7 +31,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Doctrine\\DBAL\\Migrations\\": "lib/Doctrine/DBAL/Migrations"
+            "Doctrine\\DBAL\\Migrations\\": "lib/Doctrine/DBAL/Migrations",
+            "Doctrine\\Migrations\\": "lib/Doctrine/Migrations"
         }
     },
     "autoload-dev": {
