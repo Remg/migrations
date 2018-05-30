@@ -27,8 +27,8 @@ use Doctrine\Migrations\Tests\Stub\Functional\MigrationMigrateFurther;
 use Doctrine\Migrations\Tests\Stub\Functional\MigrationMigrateUp;
 use Doctrine\Migrations\Tests\Stub\Functional\MigrationModifySchemaInPreAndPost;
 use Doctrine\Migrations\Tests\Stub\Functional\MigrationSkipMigration;
-use Doctrine\Migrations\Version;
-use Doctrine\Migrations\VersionExecutor;
+use Doctrine\Migrations\Version\Executor;
+use Doctrine\Migrations\Version\Version;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Stopwatch\Stopwatch as SymfonyStopwatch;
 use function file_exists;
@@ -576,7 +576,7 @@ class FunctionalTest extends MigrationTestCase
         $symfonyStopwatch = new SymfonyStopwatch();
         $stopwatch        = new Stopwatch($symfonyStopwatch);
 
-        $versionExecutor = new VersionExecutor(
+        $versionExecutor = new Executor(
             $this->config,
             $this->connection,
             $schemaDiffProvider,

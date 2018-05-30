@@ -19,7 +19,7 @@ use Doctrine\Migrations\Finder\MigrationDeepFinder;
 use Doctrine\Migrations\Finder\MigrationFinder;
 use Doctrine\Migrations\OutputWriter;
 use Doctrine\Migrations\QueryWriter;
-use Doctrine\Migrations\Version;
+use Doctrine\Migrations\Version\Version;
 use function str_replace;
 
 class Configuration

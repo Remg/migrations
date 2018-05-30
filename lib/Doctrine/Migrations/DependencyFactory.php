@@ -7,10 +7,20 @@ namespace Doctrine\Migrations;
 use Doctrine\DBAL\Connection;
 use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Finder\RecursiveRegexFinder;
+use Doctrine\Migrations\Generator\FileBuilder;
+use Doctrine\Migrations\Generator\Generator;
+use Doctrine\Migrations\Generator\SqlGenerator;
+use Doctrine\Migrations\MigrationTable\MigrationTable;
+use Doctrine\Migrations\MigrationTable\MigrationTableManipulator;
+use Doctrine\Migrations\MigrationTable\MigrationTableStatus;
+use Doctrine\Migrations\MigrationTable\MigrationTableUpdater;
 use Doctrine\Migrations\Provider\LazySchemaDiffProvider;
 use Doctrine\Migrations\Provider\SchemaDiffProvider;
 use Doctrine\Migrations\Provider\SchemaDiffProviderInterface;
 use Doctrine\Migrations\Tools\Console\Helper\MigrationStatusInfosHelper;
+use Doctrine\Migrations\Version\AliasResolver;
+use Doctrine\Migrations\Version\Executor;
+use Doctrine\Migrations\Version\Factory;
 use Symfony\Component\Stopwatch\Stopwatch as SymfonyStopwatch;
 
 /**
@@ -63,10 +73,10 @@ class DependencyFactory
         });
     }
 
-    public function getMigrationFileBuilder() : MigrationFileBuilder
+    public function getMigrationFileBuilder() : FileBuilder
     {
-        return $this->getDependency(MigrationFileBuilder::class, function () : MigrationFileBuilder {
-            return new MigrationFileBuilder(
+        return $this->getDependency(FileBuilder::class, function () : FileBuilder {
+            return new FileBuilder(
                 $this->getConnection()->getDatabasePlatform(),
                 $this->configuration->getMigrationsTableName(),
                 $this->configuration->getQuotedMigrationsColumnName(),
@@ -89,7 +99,7 @@ class DependencyFactory
                 $this->configuration,
                 $this->getConnection(),
                 $this->configuration->getMigrationsFinder(),
-                new VersionFactory($this->configuration, $this->getVersionExecutor())
+                new Factory($this->configuration, $this->getVersionExecutor())
             );
         });
     }
@@ -142,10 +152,10 @@ class DependencyFactory
         });
     }
 
-    public function getVersionExecutor() : VersionExecutor
+    public function getVersionExecutor() : Executor
     {
-        return $this->getDependency(VersionExecutor::class, function () : VersionExecutor {
-            return new VersionExecutor(
+        return $this->getDependency(Executor::class, function () : Executor {
+            return new Executor(
                 $this->configuration,
                 $this->getConnection(),
                 $this->getSchemaDiffProvider(),
@@ -173,10 +183,10 @@ class DependencyFactory
         });
     }
 
-    public function getVersionAliasResolver() : VersionAliasResolver
+    public function getVersionAliasResolver() : AliasResolver
     {
-        return $this->getDependency(VersionAliasResolver::class, function () : VersionAliasResolver {
-            return new VersionAliasResolver(
+        return $this->getDependency(AliasResolver::class, function () : AliasResolver {
+            return new AliasResolver(
                 $this->getMigrationRepository()
             );
         });
@@ -196,17 +206,17 @@ class DependencyFactory
         });
     }
 
-    public function getMigrationGenerator() : MigrationGenerator
+    public function getMigrationGenerator() : Generator
     {
-        return $this->getDependency(MigrationGenerator::class, function () : MigrationGenerator {
-            return new MigrationGenerator($this->configuration);
+        return $this->getDependency(Generator::class, function () : Generator {
+            return new Generator($this->configuration);
         });
     }
 
-    public function getMigrationSqlGenerator() : MigrationSqlGenerator
+    public function getMigrationSqlGenerator() : SqlGenerator
     {
-        return $this->getDependency(MigrationSqlGenerator::class, function () : MigrationSqlGenerator {
-            return new MigrationSqlGenerator(
+        return $this->getDependency(SqlGenerator::class, function () : SqlGenerator {
+            return new SqlGenerator(
                 $this->configuration,
                 $this->getConnection()->getDatabasePlatform()
             );

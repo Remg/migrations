@@ -9,6 +9,8 @@ use Doctrine\Migrations\Exception\MigrationException;
 use Doctrine\Migrations\Exception\NoMigrationsToExecute;
 use Doctrine\Migrations\Exception\UnknownMigrationVersion;
 use Doctrine\Migrations\Tools\BytesFormatter;
+use Doctrine\Migrations\Version\Direction;
+use Doctrine\Migrations\Version\Version;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 use Throwable;
 use const COUNT_RECURSIVE;
@@ -61,8 +63,8 @@ class Migrator
         }
 
         $direction = $from > $to
-            ? VersionDirection::DOWN
-            : VersionDirection::UP;
+            ? Direction::DOWN
+            : Direction::UP;
 
         $this->outputWriter->write(
             sprintf("-- Migrating from %s to %s\n", $from, $to)
@@ -228,7 +230,7 @@ class Migrator
 
     private function calculateDirection(string $from, string $to) : string
     {
-        return (int) $from > (int) $to ? VersionDirection::DOWN : VersionDirection::UP;
+        return (int) $from > (int) $to ? Direction::DOWN : Direction::UP;
     }
 
     /** @return string[][] */

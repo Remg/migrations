@@ -8,8 +8,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\Migrations\Configuration\Configuration;
-use Doctrine\Migrations\MigrationTableManipulator;
-use Doctrine\Migrations\MigrationTableStatus;
+use Doctrine\Migrations\MigrationTable\MigrationTableManipulator;
+use Doctrine\Migrations\MigrationTable\MigrationTableStatus;
 use Doctrine\Migrations\Tests\MigrationTestCase;
 
 class MigrationTableManipulatorTest extends MigrationTestCase

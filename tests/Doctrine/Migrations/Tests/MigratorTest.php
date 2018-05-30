@@ -16,7 +16,7 @@ use Doctrine\Migrations\QueryWriter;
 use Doctrine\Migrations\Stopwatch;
 use Doctrine\Migrations\Tests\Stub\Functional\MigrateNotTouchingTheSchema;
 use Doctrine\Migrations\Tests\Stub\Functional\MigrationThrowsError;
-use Doctrine\Migrations\VersionDirection;
+use Doctrine\Migrations\Version\Direction;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use Symfony\Component\Console\Output\StreamOutput;
 use const DIRECTORY_SEPARATOR;
@@ -81,7 +81,7 @@ class MigratorTest extends MigrationTestCase
 
         $queryWriter->expects($this->once())
             ->method('write')
-            ->with('/path', VersionDirection::DOWN, $sql);
+            ->with('/path', Direction::DOWN, $sql);
 
         $migration->writeSqlFile('/path', '1');
     }
